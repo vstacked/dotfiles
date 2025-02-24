@@ -1,0 +1,10 @@
+tags
+test.sh
+.luarc.json
+nvim
+
+!snippets/package.json
+snippets/*
+
+spell/
+# lazy-lock.json

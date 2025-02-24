@@ -1,0 +1,61 @@
+{
+  "snippets.ultisnips.enable": false,
+  "snippets.ultisnips.pythonPrompt": false,
+  "snippets.textmateSnippetsRoots": [
+    "~/AppData/Local/nvim/snippets/eyy/"
+  ],
+  "suggest.removeDuplicateItems": true,
+  "suggest.completionItemKindLabels": {
+    "method": "  ",
+    "function": "  ",
+    "variable": "  ",
+    "field": "  ",
+    "typeParameter": "  ",
+    "constant": "  ",
+    "class": "  ",
+    "interface": "  ",
+    "struct": "  ",
+    "event": "  ",
+    "operator": "  ",
+    "module": " 󰅩 ",
+    "property": "  ",
+    "enum": "  ",
+    "reference": "  ",
+    "keyword": "  ",
+    "file": "  ",
+    "folder": "  ",
+    "color": "  ",
+    "unit": "  ",
+    "snippet": "  ",
+    "text": " 󰀬 ",
+    "constructor": "  ",
+    "value": "  ",
+    "enumMember": "  ",
+    "default": "  ",
+  },
+  "suggest.detailField": "preview",
+  "prettier.onlyUseLocalVersion": true,
+  "diagnostic.virtualText": true,
+  "suggest.floatConfig": {
+    "border": true
+  },
+  "diagnostic.floatConfig": {
+    "border": true
+  },
+  "signature.floatConfig": {
+    "border": true
+  },
+  "hover.floatConfig": {
+    "border": true
+  },
+  "diagnostic.errorSign": "󰅚 ",
+  "diagnostic.infoSign": "󰋽 ",
+  "diagnostic.hintSign": "󰌶 ",
+  "diagnostic.warningSign": "󰀪 ",
+  "typescript.inlayHints.parameterNames.enabled": "literals",
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.enumMemberValues.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+}
