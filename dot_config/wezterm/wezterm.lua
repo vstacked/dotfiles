@@ -19,7 +19,7 @@ config.tab_bar_at_bottom = true
 config.use_fancy_tab_bar = false
 config.status_update_interval = 1000
 
---**config.font = wezterm.font("CaskaydiaCove Nerd Font")
+config.font = wezterm.font("CaskaydiaCove Nerd Font")
 config.font_size = 10.25
 
 config.window_padding = {
@@ -30,11 +30,13 @@ config.window_padding = {
 }
 
 local basename = function(s)
+	local charRemoved = string.gsub(s, "[ ,;:/]*$", "") -- remove characters on the end of string
 	-- Nothing a little regex can't fix
-	return string.gsub(s, "(.*[/\\])(.*)", "%2")
+	-- return string.gsub(charRemoved, "(.*[/\\])(.*)", "%2") -- windows
+	return string.gsub(charRemoved, "(.*[//])(.*)", "%2")
 end
 
-config.default_prog = { "zsh" }
+-- config.default_prog = { "zsh" }
 -- { "C:/Program Files/WindowsApps/Microsoft.PowerShell_7.4.4.0_x64__8wekyb3d8bbwe/pwsh.exe -nologo" }
 -- config.default_prog = { "C:/Windows/system32/bash.exe" }
 
@@ -77,7 +79,11 @@ wezterm.on("update-status", function(window, pane)
 
 	-- Current working directory
 	local cwd = pane:get_current_working_dir().path
+	wezterm.log_info("kinla")
+	wezterm.log_info(cwd)
+	wezterm.log_info(basename(cwd))
 	cwd = cwd and basename(cwd) or ""
+	wezterm.log_info(cwd)
 
 	-- Time
 	local time = wezterm.strftime("%H:%M")
