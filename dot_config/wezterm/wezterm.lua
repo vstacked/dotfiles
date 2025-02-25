@@ -79,11 +79,7 @@ wezterm.on("update-status", function(window, pane)
 
 	-- Current working directory
 	local cwd = pane:get_current_working_dir().path
-	wezterm.log_info("kinla")
-	wezterm.log_info(cwd)
-	wezterm.log_info(basename(cwd))
 	cwd = cwd and basename(cwd) or ""
-	wezterm.log_info(cwd)
 
 	-- Time
 	local time = wezterm.strftime("%H:%M")
