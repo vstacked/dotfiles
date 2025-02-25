@@ -1,0 +1,7 @@
+0000000000000000000000000000000000000000 0d31cfacba3c8e394bfec577d67be8f5fcb8a20a rizki <54944887+vstacked@users.noreply.github.com> 1740467753 +0700	branch: Created from origin/tryhehe
+0d31cfacba3c8e394bfec577d67be8f5fcb8a20a 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 rizki <54944887+vstacked@users.noreply.github.com> 1740467791 +0700	reset: moving to 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7
+1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 rizki <54944887+vstacked@users.noreply.github.com> 1740467901 +0700	Branch: renamed refs/heads/tryhehe to refs/heads/main
+1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 rizki <54944887+vstacked@users.noreply.github.com> 1740467939 +0700	Branch: renamed refs/heads/main to refs/heads/main
+1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 rizki <54944887+vstacked@users.noreply.github.com> 1740468063 +0700	Branch: renamed refs/heads/main to refs/heads/tryhehe
+1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 rizki <54944887+vstacked@users.noreply.github.com> 1740468209 +0700	Branch: renamed refs/heads/tryhehe to refs/heads/main
+1816dc2d99896d55e3622c1dc60bcaf70ece0ce7 2da9b5ff2d691e32dbf4887e4649c74fcff4bc51 rizki <54944887+vstacked@users.noreply.github.com> 1740470474 +0700	commit: feat: update alpha header, disable specific shell on toggleterm

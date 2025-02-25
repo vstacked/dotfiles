@@ -4,8 +4,14 @@
 	bare = false
 	logallrefupdates = true
 [remote "origin"]
-	url = https://github.com/vstacked/kickstart.nvim.git
+	url = git@github.com:vstacked/kickstart.nvim.git
 	fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
 	remote = origin
 	merge = refs/heads/master
+	vscode-merge-base = origin/master
+[branch "main"]
+	vscode-merge-base = origin/tryhehe
+	gk-merge-base = origin/tryhehe
+	remote = origin
+	merge = refs/heads/main

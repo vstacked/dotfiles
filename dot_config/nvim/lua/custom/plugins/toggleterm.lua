@@ -6,7 +6,7 @@ return {
     event = 'VeryLazy',
     config = function()
       require('toggleterm').setup {
-        shell = 'pwsh -NoLogo',
+        -- shell = 'pwsh -NoLogo',
         open_mapping = [[<C-\>]],
         direction = 'float',
       }
