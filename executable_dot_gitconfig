@@ -1,0 +1,22 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+;;	signingkey = 99664901
+	email = 54944887+vstacked@users.noreply.github.com
+	name = rizki
+;;[tag]
+;;	gpgSign = true
+;;[gpg]
+;;	program = gpg
+;;[commit]
+;;	gpgSign = true
+; [difftool "sourcetree"]
+; 	cmd = '' \"$LOCAL\" \"$REMOTE\"
+; [mergetool "sourcetree"]
+; 	cmd = "'' "
+; 	trustExitCode = true
+;;[core]
+;;	editor = nvim

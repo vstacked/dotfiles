@@ -1,3 +1,135 @@
+# line: 147
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time Oh My Zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="amuse"
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in $ZSH/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+
+# Uncomment the following line to change how often to auto-update (in days).
+# zstyle ':omz:update' frequency 13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS="true"
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+	bun
+	chezmoi
+	common-aliases
+	deno
+	dnf
+	docker
+	docker-compose
+	flutter
+	fzf
+	gh
+	git
+	golang
+	gpg-agent
+	npm
+	nvm
+	pm2
+	ssh
+	ssh-agent
+	timer
+	tldr
+	z
+	zsh-autosuggestions
+	zsh-syntax-highlighting
+)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='nvim'
+# fi
+export EDITOR='nvim'
+
+# Compilation flags
+# export ARCHFLAGS="-arch $(uname -m)"
+
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -6,14 +138,56 @@ setopt autocd beep extendedglob nomatch notify
 bindkey -e
 # End of lines configured by zsh-newuser-install
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/kinla/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# Alias
-alias v=nvim
+# ===========================================================================
+
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' format '%F{#7f9fbc}⌜ %d ⌟%f'
+zle -C alias-expension complete-word _generic
+bindkey '^a' alias-expension
+zstyle ':completion:alias-expension:*' completer _expand_alias
+zmodload zsh/complist
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+
+# Part of zsh-autosuggestions.
+# this would bind ctrl + space to accept the current suggestion.
+bindkey '^ ' autosuggest-accept
+
+# Set up fzf key bindings and fuzzy completion
+# source <(fzf --zsh)
+
+FZF_OPTS="
+--height 50% -1
+--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300'
+--preview-window='right:hidden:wrap'
+--header 'Ctrl-t to toggle preview | Ctrl-u to preview up | Ctrl-d to preview down | Ctrl-h to show hidden files'
+--bind='ctrl-t:toggle-preview,ctrl-d:preview-down,ctrl-u:preview-up'
+
+--color=fg:-1,fg+:#e4f0fb,bg:-1,bg+:#202430
+--color=hl:#5de4c7,hl+:#5de4c7,info:#fffac2,marker:#7f9fbc
+--color=prompt:#d0679d,spinner:#7f9fbc,pointer:#5de4c7,header:#7f9fbc
+--color=border:#7f9fbc,label:#e4f0fb,query:#d9d9d9
+--border-label-pos='0' --preview-window='border-rounded' --prompt='» ' --marker='∙'
+--pointer='∙' --separator='─' --scrollbar='│' --layout='reverse'
+"
+FD_OPTIONS="--follow --exclude .git --exclude node_modules"
+
+# Use git-ls-files insidate git repo, otherwise fd
+export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l $FD_OPTIONS"
+export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
+export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
+
+export FZF_DEFAULT_OPTS="${FZF_OPTS} --bind 'ctrl-h:reload($FZF_DEFAULT_COMMAND --hidden)'"
+export FZF_CTRL_T_OPTS="${FZF_OPTS} --bind 'ctrl-h:reload($FZF_CTRL_T_COMMAND --hidden)'"
+export FZF_ALT_C_OPTS="${FZF_OPTS} --bind 'ctrl-h:reload($FZF_ALT_C_COMMAND --hidden)'"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -23,10 +197,30 @@ export PATH="$PATH:`yarn global bin`"
 
 export XCURSOR_SIZE="$(gsettings get org.gnome.desktop.interface cursor-size)"
 
-export ANDROID_HOME=$HOME/Android/Sdk
 export ANDROID_SDK_ROOT=$HOME/Android/Sdk
-export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/platform-tools
-export PATH=$PATH:$ANDROID_HOME/platforms
-export PATH=$PATH:$ANDROID_HOME/tools/bin
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/10.0/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/emulator
+export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools
+export PATH=$PATH:$ANDROID_SDK_ROOT/platforms
+export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin
+export PATH=$PATH:$ANDROID_SDK_ROOT/cmdline-tools/10.0/bin
+
+# Aliases
+alias v=nvim
+alias d="dolphin ."
+alias zh='echo "
+Alt + f/b		— Move cursor to previous/next word
+Ctrl + a/e		— Move cursor to beginning/end of command
+
+Ctrl + t		- Paste the selected files and directories onto the command-line 
+Ctrl + r		- Paste the selected command from history onto the command-line 
+Alt - c			- cd into the selected directory
+** (followed by TAB)	- Really handy to find files or directory quickly, or anything else you want
+
+Ctrl + u		- delete from the cursor to the start of the line.
+Ctrl + k		- delete from the cursor to the end of the line.
+Ctrl + w		- delete from the cursor to the start of the preceding word.
+Alt + d			- delete from the cursor to the end of the next word.
+Ctrl + l		- clear the terminal.
+
+Ctrl + a		- expand aliases
+"'

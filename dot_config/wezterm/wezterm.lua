@@ -1,14 +1,39 @@
 -- Pull in the wezterm API
 local wezterm = require("wezterm")
 
---**wezterm.on("gui-startup", function(cmd)
---**	---@diagnostic disable-next-line: unused-local
---**	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
---**	window:gui_window():toggle_fullscreen()
---**end)
+-- A plugin to save the state of your windows, tabs and panes
+local resurrect = wezterm.plugin.require("https://github.com/MLFlexer/resurrect.wezterm")
+local resurrectMsg = ""
+resurrect.state_manager.set_encryption({
+	enable = false,
+	method = "gpg", -- "age" is the default encryption method, but you can also specify "rage" or "gpg"
+	-- private_key = "", -- if using "gpg", you can omit this
+	public_key = "E59D32078FDE14D5",
+})
+resurrect.state_manager.periodic_save({ interval_seconds = 15 * 60, save_workspaces = true })
+wezterm.on("resurrect.state_manager.periodic_save", function()
+	resurrect.state_manager.write_current_state("default", "workspace")
+end)
+wezterm.on("gui-startup", resurrect.state_manager.resurrect_on_gui_startup)
+
+--wezterm.on("gui-startup", function(cmd)
+--	---@diagnostic disable-next-line: unused-local
+--	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+--	window:gui_window():maximize()
+--	-- window:gui_window():toggle_fullscreen()
+--end)
 
 -- This will hold the configuration.
 local config = wezterm.config_builder()
+local action = wezterm.action
+
+wezterm.on("quit-and-resurrect", function(window, pane)
+	resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
+	resurrect.window_state.save_window_action()
+	resurrect.state_manager.write_current_state("default", "workspace")
+
+	window:perform_action(action.QuitApplication, pane)
+end)
 
 -- This is where you actually apply your config choices
 
@@ -112,6 +137,7 @@ wezterm.on("update-status", function(window, pane)
 		-- Wezterm has a built-in nerd fonts
 		-- https://wezfurlong.org/wezterm/config/lua/wezterm/nerdfonts.html
 		{ Foreground = { Color = "#767C9D" } },
+		{ Text = resurrectMsg },
 		{ Text = wezterm.nerdfonts.md_folder .. "  " .. cwd },
 		{ Text = " | " },
 		{ Text = wezterm.nerdfonts.md_clock .. "  " .. time },
@@ -152,70 +178,128 @@ config.keys = {
 	{
 		key = "t",
 		mods = "LEADER",
-		action = wezterm.action.SpawnCommandInNewTab({
-			cwd = wezterm.home_dir,
-		}),
+		action = action.SpawnCommandInNewTab({ cwd = wezterm.home_dir }),
 	},
-
 	{
 		mods = "LEADER",
 		key = "c",
-		action = wezterm.action.SpawnTab("CurrentPaneDomain"),
+		action = action.SpawnTab("CurrentPaneDomain"),
 	},
 	{
 		mods = "LEADER",
 		key = "q",
-		action = wezterm.action.CloseCurrentPane({ confirm = true }),
+		action = action.CloseCurrentPane({ confirm = true }),
+	},
+	{
+		mods = "LEADER",
+		key = "Q",
+		action = action.EmitEvent("quit-and-resurrect"),
 	},
 	{
 		mods = "LEADER",
 		key = "=",
-		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+		action = action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
 		mods = "LEADER",
 		key = "-",
-		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+		action = action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
 	{
 		mods = "LEADER",
 		key = "h",
-		action = wezterm.action.ActivatePaneDirection("Left"),
+		action = action.ActivatePaneDirection("Left"),
 	},
 	{
 		mods = "LEADER",
 		key = "j",
-		action = wezterm.action.ActivatePaneDirection("Down"),
+		action = action.ActivatePaneDirection("Down"),
 	},
 	{
 		mods = "LEADER",
 		key = "k",
-		action = wezterm.action.ActivatePaneDirection("Up"),
+		action = action.ActivatePaneDirection("Up"),
 	},
 	{
 		mods = "LEADER",
 		key = "l",
-		action = wezterm.action.ActivatePaneDirection("Right"),
+		action = action.ActivatePaneDirection("Right"),
 	},
 	{
 		mods = "LEADER",
 		key = "LeftArrow",
-		action = wezterm.action.AdjustPaneSize({ "Left", 5 }),
+		action = action.AdjustPaneSize({ "Left", 5 }),
 	},
 	{
 		mods = "LEADER",
 		key = "RightArrow",
-		action = wezterm.action.AdjustPaneSize({ "Right", 5 }),
+		action = action.AdjustPaneSize({ "Right", 5 }),
 	},
 	{
 		mods = "LEADER",
 		key = "DownArrow",
-		action = wezterm.action.AdjustPaneSize({ "Down", 5 }),
+		action = action.AdjustPaneSize({ "Down", 5 }),
 	},
 	{
 		mods = "LEADER",
 		key = "UpArrow",
-		action = wezterm.action.AdjustPaneSize({ "Up", 5 }),
+		action = action.AdjustPaneSize({ "Up", 5 }),
+	},
+
+	{
+		key = "r",
+		mods = "LEADER",
+		action = wezterm.action_callback(function(win, pane)
+			resurrectMsg = "Workspace manually saved! | "
+
+			resurrect.state_manager.save_state(resurrect.workspace_state.get_workspace_state())
+			resurrect.window_state.save_window_action()
+			resurrect.state_manager.write_current_state("default", "workspace")
+
+			wezterm.sleep_ms(1000)
+			resurrectMsg = ""
+		end),
+	},
+	{
+		key = "R",
+		mods = "LEADER",
+		action = wezterm.action_callback(function(win, pane)
+			resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id, label)
+				local type = string.match(id, "^([^/]+)") -- match before '/'
+				id = string.match(id, "([^/]+)$") -- match after '/'
+				id = string.match(id, "(.+)%..+$") -- remove file extension
+				local opts = {
+					relative = true,
+					restore_text = true,
+					on_pane_restore = resurrect.tab_state.default_on_pane_restore,
+				}
+				if type == "workspace" then
+					local state = resurrect.state_manager.load_state(id, "workspace")
+					resurrect.workspace_state.restore_workspace(state, opts)
+					wezterm.log_info("mirror ", id, state, opts)
+				elseif type == "window" then
+					local state = resurrect.state_manager.load_state(id, "window")
+					resurrect.window_state.restore_window(pane:window(), state, opts)
+				elseif type == "tab" then
+					local state = resurrect.state_manager.load_state(id, "tab")
+					resurrect.tab_state.restore_tab(pane:tab(), state, opts)
+				end
+			end)
+		end),
+	},
+	{
+		key = "D",
+		mods = "LEADER",
+		action = wezterm.action_callback(function(win, pane)
+			resurrect.fuzzy_loader.fuzzy_load(win, pane, function(id)
+				resurrect.state_manager.delete_state(id)
+			end, {
+				title = "Delete State",
+				description = "Select State to Delete and press Enter = accept, Esc = cancel, / = filter",
+				fuzzy_description = "Search State to Delete: ",
+				is_fuzzy = true,
+			})
+		end),
 	},
 }
 
@@ -224,9 +308,33 @@ for i = 0, 8 do
 	table.insert(config.keys, {
 		key = tostring(i + 1),
 		mods = "LEADER",
-		action = wezterm.action.ActivateTab(i),
+		action = action.ActivateTab(i),
 	})
 end
+
+-- Change mouse scroll amount
+config.mouse_bindings = {
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		mods = "NONE",
+		action = action.ScrollByLine(-1),
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		mods = "NONE",
+		action = action.ScrollByLine(1),
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		mods = "SHIFT",
+		action = action.ScrollByLine(-6),
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		mods = "SHIFT",
+		action = action.ScrollByLine(6),
+	},
+}
 
 -- and finally, return the configuration to wezterm
 return config

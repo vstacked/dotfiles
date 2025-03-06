@@ -42,7 +42,14 @@ return {
             'diagnostics',
           },
           lualine_c = { { 'filename', path = 1 } },
-          lualine_x = { 'filetype' },
+          lualine_x = {
+            {
+              require('noice').api.statusline.mode.get,
+              cond = require('noice').api.statusline.mode.has,
+              color = { fg = '#FFFAC2' },
+            },
+            { 'filetype' },
+          },
           -- lualine_x = {  'encoding', 'fileformat', 'filetype' },
           lualine_y = { 'progress' },
           lualine_z = { { selectionCount }, 'location' },

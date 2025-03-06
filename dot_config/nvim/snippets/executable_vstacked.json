@@ -1,0 +1,10 @@
+{
+  "krnstyle": {
+    "prefix": "krnstyle",
+    "body": ["style={[{ $1 }, $2]}"]
+  },
+  "klog": {
+    "prefix": "klog",
+    "body": ["console.log(\"keshi $1\", $2);"]
+  }
+}
