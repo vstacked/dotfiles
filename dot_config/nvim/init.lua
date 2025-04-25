@@ -380,7 +380,6 @@ require('lazy').setup({
         { '<leader>g', group = 'Git', mode = { 'n', 'v' } },
         { '<leader>e', icon = { icon = '', color = 'azure' } },
         { '<leader>H', icon = { icon = '', color = 'azure' } },
-        { '<leader>m', icon = { icon = '', color = 'green' } },
         { '<leader>W', icon = { icon = '󰽄', color = 'grey' } },
         { '<leader>x', group = 'Trouble', icon = { icon = '', color = 'cyan' } },
         { '<leader>gh', group = 'Hunk', icon = { icon = '', color = 'cyan' } },
@@ -763,7 +762,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {
+        ts_ls = {
           init_options = {
             preferences = {
               includeInlayParameterNameHints = 'literals',
