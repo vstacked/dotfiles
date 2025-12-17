@@ -898,6 +898,9 @@ require('lazy').setup({
           -- Add additional filetypes
           vim.list_extend(opts.filetypes, opts.filetypes_include or {})
         end,
+        rust_analyzer = function(event)
+          vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
+        end,
       }
     end,
   },
