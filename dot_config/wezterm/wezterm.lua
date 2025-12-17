@@ -115,7 +115,7 @@ wezterm.on("update-status", function(window, pane)
 
 	-- https://github.com/dragonlobster/wezterm-config/blob/main/wezterm.lua
 	if window:leader_is_active() then
-		prefix = "  🪺  "
+		prefix = "    "
 		---@diagnostic disable-next-line: undefined-global
 		SOLID_LEFT_ARROW = utf8.char(0xe0b2)
 	end
@@ -150,7 +150,7 @@ wezterm.on("format-tab-title", function(tab)
 	cwd = cwd and basename(cwd) or ""
 
 	if tab.is_active then
-		return "  🐦‍⬛  "
+		return " [λ] "
 	end
 
 	return " [" .. tab.tab_index + 1 .. "] " .. cwd .. " "
