@@ -93,6 +93,8 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+vim.opt.backupcopy = 'yes'
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -727,7 +729,8 @@ require('lazy').setup({
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+          -- local client = vim.lsp.get_client_by_id(event.data.client_id)
+          -- if client and client.supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint) then
           --   map('<leader>th', function()
           --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
           --   end, 'Toggle Inlay Hints')
@@ -755,7 +758,7 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -1190,6 +1193,8 @@ require('lazy').setup({
         'git_rebase',
         'gitignore',
         'gitattributes',
+        'rust',
+        'toml',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
