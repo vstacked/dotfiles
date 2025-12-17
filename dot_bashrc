@@ -39,3 +39,4 @@ unset rc
 #export PATH=$PATH:$ANDROID_HOME/platforms
 #export PATH=$PATH:$ANDROID_HOME/tools/bin
 #export PATH=$PATH:$ANDROID_HOME/cmdline-tools/10.0/bin
+. "$HOME/.cargo/env"

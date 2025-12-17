@@ -246,3 +246,4 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 [[ -f /home/kinla/.dart-cli-completion/zsh-config.zsh ]] && . /home/kinla/.dart-cli-completion/zsh-config.zsh || true
 ## [/Completion]
 
+export GOPATH=$HOME/go
