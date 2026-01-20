@@ -1,0 +1,314 @@
+" https://github.com/ddadon10/dotfiles/blob/trunk/.vimrc
+" A .vimrc that works both with Vim and IntelliJ IDEA
+
+let mapleader = " "
+
+
+" ----- Vim Behavior -----
+filetype plugin indent on  " Enable filetype detection
+
+set backspace=indent,eol,start  " Backspace in insert mode works like normal editor
+
+syntax on  " Enable syntax highlighting
+
+set fileformat=unix  " File format
+
+set splitbelow  " Horizontal splitting a window will put the new window below the current one
+
+set splitright  " Vertical splitting a window will put the new window right of the current one
+
+set omnifunc=syntaxcomplete#Complete  " Enable omni completion (IntelliSense like)
+
+" Prevent vim from moving back one character after leaving insert mode
+inoremap <silent> <Esc> <Esc>`^
+
+" ----- Indentation -----
+set autoindent  " Enable Auto indent
+
+set shiftwidth=2  " Indent by 2 spaces when auto-indenting
+
+set softtabstop=2  " Indent by 2 spaces when hitting tab
+
+" ----- UI -----
+colorscheme desert  " Good default colorscheme
+
+set textwidth=80  " Max textwidth
+
+set number relativenumber  " Show line numbers
+
+set showcmd  " Show cmd while typing
+
+set showmode  " Show the current mode, like --INSERT--
+
+" ----- Keys and shortcut config -----
+" Remap shortcut to navigate between splited layouts easily
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" In insert or command mode, move by using Ctrl
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+cnoremap <C-h> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-l> <Right>
+
+" Remove Arrow key
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+
+" Enable folding with spacebar
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+" ----- Searching -----
+set nohlsearch " Disable search highlighting
+
+set incsearch  " incremental searching
+
+set ignorecase  " Ignore case in search patterns
+
+set smartcase  " Override the 'ignorecase' option if the search pattern contains upper case characters
+
+"set NERDTree
+"let g:NERDTreeMapOpenInTab='\t'
+"map <leader>n <Action>(NERDTreeToggle)
+
+" ----- Register config -----
+" Put d/x/r into the black hole register
+nnoremap d "_d
+nnoremap x "_x
+nnoremap r "_r
+
+nnoremap D "_D
+vnoremap d "_d
+
+" ----- IDEAvim ---
+if has('ide')
+    " -- Settings --
+    set ideamarks " Sync IntellIJ bookmarks and Vim marks
+    set idearefactormode=keep " Keep the mode that was enabled before refactoring
+
+    " -- Emulated Vim Plugins --
+    set ideajoin
+    set surround
+    set ReplaceWithRegister
+
+    " -- GoTo keybinding --
+    map gd <Action>(GotoDeclaration)
+    map ge <Action>(GotoNextError)
+    map gi <Action>(GotoImplementation)
+    map gt <Action>(GotoTest)
+    map gu <Action>(FindUsages)
+    map gk <Action>(Back)
+    map gj <Action>(Forward)
+
+    " Pick action/class/symbol/file/recent change file/recent file
+    map ga <Action>(GotoAction)
+    map gc <Action>(GotoClass)
+    map ss <Action>(GotoSymbol)
+    "map <leader>ff <Action>(GotoFile)
+    map <leader>fc <Action>(RecentChangedFiles)
+    map <leader>fo <Action>(RecentFiles)
+
+    " -- Leader keybinding --
+    " Inline comments in keybinding are not supported, so each comment apply to the line below
+
+    " Attach
+    "map <leader>a <Action>(XDebugger.AttachToProcess)
+    " deBug
+    map <leader>b <Action>(Debug)
+    map <leader>c <Action>(CommentByLineComment)
+    map <leader>w <Action>(ReformatCode)
+    map <leader>g <Action>(Generate)
+    map <leader>z <Action>(Vcs.RollbackChangedLines)
+    " search
+    map <leader>h <Action>(Find)
+    " Kill
+    map <leader>K <Action>(Stop)
+    " Line breakpoint
+    map <leader>l <Action>(ToggleLineBreakpoint)
+    " Next
+    map <leader>n <Action>(Resume)
+    map <leader>r <Action>(RenameElement)
+    " Start
+    map <leader>S <Action>(Run)
+    map <leader>A <Action>(android.deploy.ApplyChanges)
+
+    " consTant
+    "map <leader>t <Action>(IntroduceConstant)
+    map <leader>v <Action>(IntroduceVariable)
+    " evaluate eXpression
+    map <leader>x <Action>(EvaluateExpression)
+    " <CR> means enter
+    "map <leader><CR> <Action>(ShowIntentionActions)
+    map <leader>C <Action>(CheckinProject_reservation)
+    map <leader>L <Action>(Vcs.UpdateProject)
+    map <leader>B <Action>(Git.Branches)
+    map <leader>M <Action>(Annotate)
+
+    map <leader>% <Action>(EditorMatchBrace)
+    map <leader>W <Action>(SaveAll)
+
+    " 打开终端并进入当前目录 (OpenTerminal with current dir)
+    map <leader>tc <Action>(Terminal.OpenInTerminal)
+
+    "--------------------------------------------ME-------------------------------------------------
+
+    inoremap jj <Esc>
+
+    nmap <tab> :action NextTab<CR>
+    nmap <S-tab> :action PreviousTab<CR>
+
+    nmap <leader>a <Action>(QuickJavaDoc)
+
+    nmap , <Action>(ShowIntentionActions)
+    nmap <leader>ff <Action>(GotoFile)
+    nmap <leader>fd <Action>(FindInPath)
+
+    nmap U <Action>($Redo)
+
+    nmap <leader>eq <Action>(ExtractMethod)
+    nmap <leader>ew <Action>(Flutter.ExtractWidget)
+    nmap <leader>ef <Action>(Flutter.ExtractWidgetToFile)
+
+    nnoremap <leader>d ""d
+    nnoremap <leader>D ""D
+    vnoremap <leader>d ""d
+
+
+    "--ThePrimeagen
+    noremap <leader>p \"_dP
+
+    "leader p
+    "v o
+    "iw
+    "zz
+    " ctrl ws,ctrl w-w
+
+    "--------------------------------------------ME-------------------------------------------------
+
+
+
+    " -- Shortcut conflict config --
+    sethandler <C-2> a:vim
+    sethandler <C-S-2> a:vim
+    sethandler <C-S-6> a:vim
+    sethandler <C-A> a:vim
+    sethandler <C-B> a:vim
+    sethandler <C-D> a:vim
+    sethandler <C-E> a:vim
+    sethandler <C-F> a:vim
+    sethandler <C-G> a:vim
+    sethandler <C-H> a:vim
+    sethandler <C-I> a:vim
+    sethandler <C-J> a:vim
+    sethandler <C-K> a:vim
+    sethandler <C-L> a:vim
+    sethandler <C-M> a:vim
+    sethandler <C-N> a:vim
+    sethandler <C-O> a:vim
+    sethandler <C-P> a:vim
+    sethandler <C-R> a:vim
+    sethandler <C-S> a:vim
+    sethandler <C-T> a:vim
+    sethandler <C-V> a:vim
+    sethandler <C-W> a:vim
+endif
+
+" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+
+" Highlight copied text
+Plug 'machakann/vim-highlightedyank'
+" Commentary plugin
+Plug 'tpope/vim-commentary'
+
+" --------------------------------------------------------------------------------------------------
+"" Source your .vimrc
+"source ~/.vimrc
+
+"" -- Suggested options --
+" Show a few lines of context around the cursor. Note that this makes the
+" text scroll if you mouse-click near the start or end of the window.
+"ON set scrolloff=5
+
+" Do incremental searching.
+"ON set incsearch
+
+" Don't use Ex mode, use Q for formatting.
+"ON map Q gq
+
+"ON set showmode
+"ON set visualbell
+"ON set number relativenumber
+
+""" https://github.com/fdietze/dotfiles/blob/master/.ideavimrc
+" set <leader> to <space>
+"ON let mapleader = " "
+
+"ON map <leader>= <Action>(ReformatCode)
+"ON map <leader>- <Action>(OptimizeImports)
+
+"ON map <leader>w <Action>(SaveAll)
+""" map <leader>c <Action>(Close)
+
+""" --------------------------------------------------------
+
+""" https://github.com/leeturner/vimrc/blob/master/ideavimrc
+""" Plugin
+"ON set surround
+"ON set highlightedyank
+"ON set visualbell
+"ON set number
+
+""" Plugin settings
+"ON let g:highlightedyank_highlight_duration = "1000"
+
+""" --------------------------------------------------------
+
+""" https://gist.github.com/vlasovskikh/23df313739ad00e57c0935d54c346806
+"ON inoremap jj <Esc>
+
+""" https://gist.github.com/plateauu/2850b551c934f4168fa4f6b56e8fb087
+"ON nmap <tab> :action PreviousTab<CR>
+"ON nmap <S-tab> :action NextTab<CR>
+
+""" https://github.com/ddadon10/dotfiles/blob/trunk/.vimrc
+" In insert or command mode, move by using Ctrl
+"ON inoremap <C-h> <Left>
+"ON inoremap <C-j> <Down>
+"ON inoremap <C-k> <Up>
+"ON inoremap <C-l> <Right>
+"ON cnoremap <C-h> <Left>
+"ON cnoremap <C-j> <Down>
+"ON cnoremap <C-k> <Up>
+"ON cnoremap <C-l> <Right>
+
+""" https://gist.github.com/wangrunlin/bb97f80377db44a6fbb195eaa9759d83
+"ON map U <C-R>
+
+"ON nnoremap <leader>re :action RenameElement<CR>
+
+""" IdeaVim development stuff
+"ON set ideastrictmode
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+
+" Find more examples here: https://jb.gg/share-ideavim
